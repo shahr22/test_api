@@ -26,7 +26,7 @@ class PipelineStack(Stack):
                 commands=[
                     "npm install -g aws-cdk",                               
                     "pip install -r requirements.txt",
-                    "pip install -r requirements_msal.txt -t lambda/layers/msal_requests/python/lib/python3.9/site-packages",                          
+                    "pip install -r requirements_msal_layer.txt -t lambda/layers/msal_requests/python/lib/python3.9/site-packages",                          
                     "cdk synth",                                      
                     ],
                 primary_output_directory="cdk.out",
