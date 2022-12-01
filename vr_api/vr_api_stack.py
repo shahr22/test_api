@@ -55,7 +55,7 @@ class VrApiStack(Stack):
             lambda_data={
                 'code': _lambda.Code.from_asset('lambda/interview_reminder'),
                 'layers': [msal_layer],
-                'managed_policies': "SecretsManagerReadWrite"
+                'managed_policies': ["SecretsManagerReadWrite"]
             },
             api_config={
                 'method' : "POST",

@@ -23,7 +23,7 @@ class Route(Construct):
         )
         
         if 'managed_policies' in lambda_data:
-            for policy in lambda_data['managed_policy']:
+            for policy in lambda_data['managed_policies']:
                 lambda_role.add_managed_policy(_iam.ManagedPolicy.from_aws_managed_policy_name(policy))
 
         if 'policy_statements' in lambda_data:
