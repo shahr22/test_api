@@ -20,7 +20,7 @@ class PipelineStack(Stack):
             "Pipeline",
             synth=pipelines.ShellStep(
                 "Synth",                                           
-                input=pipelines.CodePipelineSource.connection("test_api/vr_api", "master",
+                input=pipelines.CodePipelineSource.connection("shahr22/test_api", "master",
                     connection_arn=GITHUB_ARN
                 ),
                 commands=[
