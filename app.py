@@ -3,7 +3,7 @@ import os
 
 import aws_cdk as cdk
 
-from vr_api.pipeline_stack import PipelineStack
+from vr_api.pipeline import PipelineStack
 
 
 app = cdk.App()
