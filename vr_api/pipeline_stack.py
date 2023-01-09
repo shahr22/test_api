@@ -7,7 +7,7 @@ from vr_api.pipeline_stage import PipelineStage
 from vr_api.pipeline_routes_stage import RouteStage
 from os import getenv
 
-
+# Pass code star connection as env variable
 github_conn_arn=getenv('github_conn') 
 
 class PipelineStack(Stack):
