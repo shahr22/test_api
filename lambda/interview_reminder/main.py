@@ -4,11 +4,6 @@ import msal
 import requests
 import base64
 
-# Parameters
-# with open('./params.json') as file:
-#     f=file.read()
-
-# config = json.loads(f)
 import boto3
 from botocore.exceptions import ClientError
 
@@ -61,7 +56,6 @@ def handler(event, context):
     print(email)
     print('Email built. Authenticating to Graph API...')
 
-    # Client Object
     # Client Object
     app = msal.ConfidentialClientApplication(
         config["client_id_1"], authority=config["authority1"],

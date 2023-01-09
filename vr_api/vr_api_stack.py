@@ -3,7 +3,9 @@ from aws_cdk import (
     aws_apigateway as apigw,
     aws_logs as logs,
     aws_iam as _iam,
-    aws_lambda as _lambda
+    aws_lambda as _lambda,
+    CfnOutput,
+    Duration
 )
 
 from constructs import Construct
@@ -13,6 +15,7 @@ class VrApiStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        
         log_group = logs.LogGroup(self, "ApiGatewayAccessLogs")
 
         api = apigw.RestApi(self, "TestVrApi",
@@ -42,12 +45,18 @@ class VrApiStack(Stack):
 
         plan.add_api_stage(stage=api.deployment_stage)
 
-        log_group = logs.LogGroup(self, "VrApiLogs")
-
-        msal_layer = _lambda.LayerVersion(self, "MyLayer",
+        msal_layer = _lambda.LayerVersion(self, "MSALLayer",
             code=_lambda.Code.from_asset('lambda/layers/msal_requests'),
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_9],
             )
+        
+        route = api.root.add_resource('in')
+
+        CfnOutput(self, "api-export", export_name="test-api-id", value=api.rest_api_id)
+
+        CfnOutput(self, "api-resource-export", export_name= "test-path", value=route.resource_id)
+
+        CfnOutput(self, "msal-layer", export_name= "msal-layer", value=msal_layer.layer_version_arn)
 
         interview_reminder = Route(self, "InterviewReminder",
             name='InterviewReminder',
@@ -60,8 +69,8 @@ class VrApiStack(Stack):
             api_config={
                 'method' : "POST",
                 'require_key': True
-            }
-
+            },
+            timeout=Duration.minutes(15)
         )
 
         deployment = apigw.Deployment(

@@ -10,7 +10,7 @@ from constructs import Construct
 import json
 
 class Route(Construct):
-    def __init__(self, scope: Construct, id: str, name, api, lambda_data, api_config, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, name, api, lambda_data, api_config, timeout, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         lambda_role = _iam.Role(scope=self, id='BasicLambdaRole',
@@ -36,7 +36,8 @@ class Route(Construct):
                 code=lambda_data['code'],
                 handler='main.handler',
                 role=lambda_role,
-                layers=lambda_data['layers']
+                layers=lambda_data['layers'],
+                timeout=timeout
             )
 
         route_lambda.add_permission('APIinvoke', principal=_iam.ServicePrincipal("apigateway.amazonaws.com"))

@@ -1,12 +1,14 @@
 from constructs import Construct
 from aws_cdk import (
     Stack,
-    aws_codecommit as codecommit,
     pipelines as pipelines,
 )
 from vr_api.pipeline_stage import PipelineStage
+from vr_api.pipeline_routes_stage import RouteStage
+from os import getenv
 
-GITHUB_ARN="arn:aws:codestar-connections:us-east-1:899456967600:connection/379f90c5-af81-46c2-b992-7c656c13c73c"
+
+github_conn_arn=getenv('github_conn') 
 
 class PipelineStack(Stack):
 
@@ -21,12 +23,12 @@ class PipelineStack(Stack):
             synth=pipelines.ShellStep(
                 "Synth",                                           
                 input=pipelines.CodePipelineSource.connection("shahr22/test_api", "master",
-                    connection_arn=GITHUB_ARN
+                    connection_arn=github_conn_arn
                 ),
                 commands=[
                     "npm install -g aws-cdk",                               
                     "pip install -r requirements.txt",
-                    "pip install -r requirements_msal_layer.txt -t lambda/layers/msal_requests/python/lib/python3.9/site-packages",                          
+                    "pip install -r requirements_msal_layer.txt -t lambda/layers/msal_requests/python/lib/python3.9/site-packages", # for msal lambda layer                    
                     "cdk synth",                                      
                     ],
                 primary_output_directory="cdk.out",
@@ -35,4 +37,7 @@ class PipelineStack(Stack):
 
         deploy = PipelineStage(self, "Deploy")
         deploy_stage = pipeline.add_stage(deploy)
+        deploy_route = RouteStage(self, "DeployRoute")
+        deploy_route_stage = pipeline.add_stage(deploy_route)
+
         
