@@ -8,3 +8,7 @@ __pycache__
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+.vr_api/pipeline.py
+.vr_api/pipeline_stage.py
+.vr_api/pipeline_routes_stage.py
