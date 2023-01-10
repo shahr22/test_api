@@ -8,7 +8,7 @@ from vr_api.pipeline_routes_stage import RouteStage
 from os import getenv
 
 # Pass code star connection as env variable
-github_conn_arn=getenv('github_conn') 
+github_conn_arn=getenv('github_conn')
 
 class PipelineStack(Stack):
 
@@ -25,11 +25,12 @@ class PipelineStack(Stack):
                 input=pipelines.CodePipelineSource.connection("shahr22/test_api", "master",
                     connection_arn=github_conn_arn
                 ),
+                env={"github_conn": github_conn_arn},
                 commands=[
                     "npm install -g aws-cdk",                               
                     "pip install -r requirements.txt",
                     "pip install -r requirements_msal_layer.txt -t lambda/layers/msal_requests/python/lib/python3.9/site-packages", # for msal lambda layer                    
-                    "cdk synth '*stack'",                                      
+                    "cdk synth",                                      
                     ],
                 primary_output_directory="cdk.out",
             ),
