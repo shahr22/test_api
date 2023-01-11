@@ -13,9 +13,9 @@ class Route(Construct):
     def __init__(self, scope: Construct, id: str, name, api, lambda_data, api_config, timeout, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        lambda_role = _iam.Role(scope=self, id='BasicLambdaRole',
+        lambda_role = _iam.Role(scope=self, id=name+'LambdaRole',
             assumed_by =_iam.ServicePrincipal('lambda.amazonaws.com'),
-            role_name='BasicLambdaRole',
+            role_name=name+'LambdaRole',
             managed_policies=[
             _iam.ManagedPolicy.from_aws_managed_policy_name(
                 'service-role/AWSLambdaBasicExecutionRole')  
